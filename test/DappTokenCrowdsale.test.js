@@ -1,7 +1,9 @@
+import ether from './helpers/ether';
 
 const BigNumber = web3.BigNumber;
 
 require('chai')
+  .use(require('chai-as-promised'))
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
@@ -32,6 +34,9 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
       this.wallet,
       this.token.address
     );
+
+   // Transfer token ownership to crowdsale
+    await this.token.transferOwnership(this.crowdsale.address);
   });
 
   describe('crowdsale', function() {
@@ -51,4 +56,21 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     });
   });
 
+  describe('minted crowdsale', function() {
+    it('mints tokens after purchase', async function() {
+      const originalTotalSupply = await this.token.totalSupply();
+      await this.crowdsale.sendTransaction({ value: ether(1), from: investor1 });
+      const newTotalSupply = await this.token.totalSupply();
+      assert.isTrue(newTotalSupply > originalTotalSupply);
+    });
+  });
+
+  describe('accepting payments', function() {
+    it('should accept payments', async function() {
+      const value = ether(1);
+      const purchaser = investor2;
+      await this.crowdsale.sendTransaction({ value: value, from: investor1 }).should.be.fulfilled;
+      await this.crowdsale.buyTokens(investor1, { value: value, from: purchaser }).should.be.fulfilled;
+    });
+  });
 });
