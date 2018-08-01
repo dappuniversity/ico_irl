@@ -1,0 +1,697 @@
+{
+  "contractName": "DappTokenCrowdsale",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "rate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "weiRaised",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "wallet",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_beneficiary",
+          "type": "address"
+        }
+      ],
+      "name": "buyTokens",
+      "outputs": [],
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "token",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_rate",
+          "type": "uint256"
+        },
+        {
+          "name": "_wallet",
+          "type": "address"
+        },
+        {
+          "name": "_token",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "payable": true,
+      "stateMutability": "payable",
+      "type": "fallback"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "name": "purchaser",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "name": "beneficiary",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "value",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "TokenPurchase",
+      "type": "event"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5060405160608061041c8339810160409081528151602083015191909201518282826000831161003f57600080fd5b600160a060020a038216151561005457600080fd5b600160a060020a038116151561006957600080fd5b60029290925560018054600160a060020a03928316600160a060020a0319918216179091556000805493909216921691909117905550505061036c806100b06000396000f30060806040526004361061006c5763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416632c4e722e81146100775780634042b66f1461009e578063521eb273146100b3578063ec8ac4d8146100e4578063fc0c546a146100f8575b6100753361010d565b005b34801561008357600080fd5b5061008c6101af565b60408051918252519081900360200190f35b3480156100aa57600080fd5b5061008c6101b5565b3480156100bf57600080fd5b506100c86101bb565b60408051600160a060020a039092168252519081900360200190f35b610075600160a060020a036004351661010d565b34801561010457600080fd5b506100c86101ca565b34600061011a83836101d9565b610123826101fe565b600354909150610139908363ffffffff61021b16565b6003556101468382610228565b60408051838152602081018390528151600160a060020a0386169233927f623b3804fa71d67900d064613da8f94b9617215ee90799290593e1745087ad18929081900390910190a361019883836101fa565b6101a0610232565b6101aa83836101fa565b505050565b60025481565b60035481565b600154600160a060020a031681565b600054600160a060020a031681565b600160a060020a03821615156101ee57600080fd5b8015156101fa57600080fd5b5050565b60006102156002548361026e90919063ffffffff16565b92915050565b8181018281101561021557fe5b6101fa8282610297565b600154604051600160a060020a03909116903480156108fc02916000818181858888f1935050505015801561026b573d6000803e3d6000fd5b50565b600082151561027f57506000610215565b5081810281838281151561028f57fe5b041461021557fe5b60008054604080517f40c10f19000000000000000000000000000000000000000000000000000000008152600160a060020a03868116600483015260248201869052915191909216926340c10f1992604480820193602093909283900390910190829087803b15801561030957600080fd5b505af115801561031d573d6000803e3d6000fd5b505050506040513d602081101561033357600080fd5b505115156101fa57600080fd00a165627a7a723058200aa57976b6f494c135e881090000e31a87768c4082395d928a80ceee3f79d8a30029",
+  "deployedBytecode": "0x60806040526004361061006c5763ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416632c4e722e81146100775780634042b66f1461009e578063521eb273146100b3578063ec8ac4d8146100e4578063fc0c546a146100f8575b6100753361010d565b005b34801561008357600080fd5b5061008c6101af565b60408051918252519081900360200190f35b3480156100aa57600080fd5b5061008c6101b5565b3480156100bf57600080fd5b506100c86101bb565b60408051600160a060020a039092168252519081900360200190f35b610075600160a060020a036004351661010d565b34801561010457600080fd5b506100c86101ca565b34600061011a83836101d9565b610123826101fe565b600354909150610139908363ffffffff61021b16565b6003556101468382610228565b60408051838152602081018390528151600160a060020a0386169233927f623b3804fa71d67900d064613da8f94b9617215ee90799290593e1745087ad18929081900390910190a361019883836101fa565b6101a0610232565b6101aa83836101fa565b505050565b60025481565b60035481565b600154600160a060020a031681565b600054600160a060020a031681565b600160a060020a03821615156101ee57600080fd5b8015156101fa57600080fd5b5050565b60006102156002548361026e90919063ffffffff16565b92915050565b8181018281101561021557fe5b6101fa8282610297565b600154604051600160a060020a03909116903480156108fc02916000818181858888f1935050505015801561026b573d6000803e3d6000fd5b50565b600082151561027f57506000610215565b5081810281838281151561028f57fe5b041461021557fe5b60008054604080517f40c10f19000000000000000000000000000000000000000000000000000000008152600160a060020a03868116600483015260248201869052915191909216926340c10f1992604480820193602093909283900390910190829087803b15801561030957600080fd5b505af115801561031d573d6000803e3d6000fd5b505050506040513d602081101561033357600080fd5b505115156101fa57600080fd00a165627a7a723058200aa57976b6f494c135e881090000e31a87768c4082395d928a80ceee3f79d8a30029",
+  "sourceMap": "173:197:1:-;;;236:131;8:9:-1;5:2;;;30:1;27;20:12;5:2;236:131:1;;;;;;;;;;;;;;;;;;;;;;;;;;;;2020:1:2;2012:9;;2004:18;;;;;;-1:-1:-1;;;;;2036:21:2;;;;2028:30;;;;;;-1:-1:-1;;;;;2072:20:2;;;;2064:29;;;;;;2100:4;:12;;;;2118:6;:16;;-1:-1:-1;;;;;2118:16:2;;;-1:-1:-1;;;;;;2118:16:2;;;;;;;:6;2140:14;;;;;;;;;;;;;;-1:-1:-1;;;173:197:1;;;;;;",
+  "deployedSourceMap": "173:197:1:-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;2389:21:2;2399:10;2389:9;:21::i;:::-;173:197:1;1302:19:2;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1302:19:2;;;;;;;;;;;;;;;;;;;;1352:24;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1352:24:2;;;;1000:21;;8:9:-1;5:2;;;30:1;27;20:12;5:2;1000:21:2;;;;;;;;-1:-1:-1;;;;;1000:21:2;;;;;;;;;;;;;;2551:577;;-1:-1:-1;;;;;2551:577:2;;;;;938:18;;8:9:-1;5:2;;;30:1;27;20:12;5:2;938:18:2;;;;2551:577;2634:9;2614:17;2649:45;2670:12;2634:9;2649:20;:45::i;:::-;2762:26;2778:9;2762:15;:26::i;:::-;2827:9;;2745:43;;-1:-1:-1;2827:24:2;;2841:9;2827:24;:13;:24;:::i;:::-;2815:9;:36;2858:38;2875:12;2889:6;2858:16;:38::i;:::-;2907:88;;;;;;;;;;;;;;-1:-1:-1;;;;;2907:88:2;;;2928:10;;2907:88;;;;;;;;;;;3002:47;3025:12;3039:9;3002:22;:47::i;:::-;3056:15;:13;:15::i;:::-;3077:46;3099:12;3113:9;3077:21;:46::i;:::-;2551:577;;;:::o;1302:19::-;;;;:::o;1352:24::-;;;;:::o;1000:21::-;;;-1:-1:-1;;;;;1000:21:2;;:::o;938:18::-;;;-1:-1:-1;;;;;938:18:2;;:::o;3552:175::-;-1:-1:-1;;;;;3665:26:2;;;;3657:35;;;;;;3706:15;;;3698:24;;;;;;3552:175;;:::o;5569:121::-;5641:7;5665:20;5680:4;;5665:10;:14;;:20;;;;:::i;:::-;5658:27;5569:121;-1:-1:-1;;5569:121:2:o;1214:123:4:-;1293:5;;;1311:6;;;;1304:14;;;4797:150:2;4900:42;4915:12;4929;4900:14;:42::i;5769:71::-;5809:6;;:26;;-1:-1:-1;;;;;5809:6:2;;;;5825:9;5809:26;;;;;:6;:26;:6;:26;5825:9;5809:6;:26;;;;;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;5809:26:2;5769:71::o;203:373:4:-;261:9;487:6;;483:35;;;-1:-1:-1;510:1:4;503:8;;483:35;-1:-1:-1;528:5:4;;;532:1;528;:5;546;;;;;;;;:10;539:18;;;503:168:3;626:5;;;612:53;;;;;;-1:-1:-1;;;;;612:53:3;;;;;;;;;;;;;;;626:5;;;;;612:25;;:53;;;;;;;;;;;;;;;;;;626:5;612:53;;;5:2:-1;;;;30:1;27;20:12;5:2;612:53:3;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;612:53:3;;;;;;;13:2:-1;8:3;5:11;2:2;;;29:1;26;19:12;2:2;-1:-1;612:53:3;604:62;;;;;;",
+  "source": "pragma solidity 0.4.24;\n\nimport \"openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol\";\nimport \"openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol\";\n\ncontract DappTokenCrowdsale is Crowdsale, MintedCrowdsale {\n\n  constructor(\n    uint256 _rate,\n    address _wallet,\n    ERC20 _token\n  )\n    Crowdsale(_rate, _wallet, _token)\n    public\n  {\n\n  }\n\n}\n",
+  "sourcePath": "/Users/gregory/code/ico_irl/contracts/DappTokenCrowdsale.sol",
+  "ast": {
+    "absolutePath": "/Users/gregory/code/ico_irl/contracts/DappTokenCrowdsale.sol",
+    "exportedSymbols": {
+      "DappTokenCrowdsale": [
+        47
+      ]
+    },
+    "id": 48,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 25,
+        "literals": [
+          "solidity",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol",
+        "file": "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol",
+        "id": 26,
+        "nodeType": "ImportDirective",
+        "scope": 48,
+        "sourceUnit": 276,
+        "src": "25:65:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
+        "file": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
+        "id": 27,
+        "nodeType": "ImportDirective",
+        "scope": 48,
+        "sourceUnit": 301,
+        "src": "91:80:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 28,
+              "name": "Crowdsale",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 275,
+              "src": "204:9:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Crowdsale_$275",
+                "typeString": "contract Crowdsale"
+              }
+            },
+            "id": 29,
+            "nodeType": "InheritanceSpecifier",
+            "src": "204:9:1"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 30,
+              "name": "MintedCrowdsale",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 300,
+              "src": "215:15:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MintedCrowdsale_$300",
+                "typeString": "contract MintedCrowdsale"
+              }
+            },
+            "id": 31,
+            "nodeType": "InheritanceSpecifier",
+            "src": "215:15:1"
+          }
+        ],
+        "contractDependencies": [
+          275,
+          300
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 47,
+        "linearizedBaseContracts": [
+          47,
+          300,
+          275
+        ],
+        "name": "DappTokenCrowdsale",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 45,
+              "nodeType": "Block",
+              "src": "361:6:1",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 46,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 40,
+                    "name": "_rate",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 33,
+                    "src": "324:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 41,
+                    "name": "_wallet",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 35,
+                    "src": "331:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 42,
+                    "name": "_token",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 37,
+                    "src": "340:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ERC20_$653",
+                      "typeString": "contract ERC20"
+                    }
+                  }
+                ],
+                "id": 43,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 39,
+                  "name": "Crowdsale",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 275,
+                  "src": "314:9:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$275_$",
+                    "typeString": "type(contract Crowdsale)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "314:33:1"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 38,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 33,
+                  "name": "_rate",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "253:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 32,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "253:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35,
+                  "name": "_wallet",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "272:15:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 34,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "272:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "293:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ERC20_$653",
+                    "typeString": "contract ERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 36,
+                    "name": "ERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 653,
+                    "src": "293:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ERC20_$653",
+                      "typeString": "contract ERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "247:62:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 44,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "361:0:1"
+            },
+            "scope": 47,
+            "src": "236:131:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 48,
+        "src": "173:197:1"
+      }
+    ],
+    "src": "0:371:1"
+  },
+  "legacyAST": {
+    "absolutePath": "/Users/gregory/code/ico_irl/contracts/DappTokenCrowdsale.sol",
+    "exportedSymbols": {
+      "DappTokenCrowdsale": [
+        47
+      ]
+    },
+    "id": 48,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 25,
+        "literals": [
+          "solidity",
+          "0.4",
+          ".24"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:1"
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol",
+        "file": "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol",
+        "id": 26,
+        "nodeType": "ImportDirective",
+        "scope": 48,
+        "sourceUnit": 276,
+        "src": "25:65:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "absolutePath": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
+        "file": "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol",
+        "id": 27,
+        "nodeType": "ImportDirective",
+        "scope": 48,
+        "sourceUnit": 301,
+        "src": "91:80:1",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 28,
+              "name": "Crowdsale",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 275,
+              "src": "204:9:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_Crowdsale_$275",
+                "typeString": "contract Crowdsale"
+              }
+            },
+            "id": 29,
+            "nodeType": "InheritanceSpecifier",
+            "src": "204:9:1"
+          },
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 30,
+              "name": "MintedCrowdsale",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 300,
+              "src": "215:15:1",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_MintedCrowdsale_$300",
+                "typeString": "contract MintedCrowdsale"
+              }
+            },
+            "id": 31,
+            "nodeType": "InheritanceSpecifier",
+            "src": "215:15:1"
+          }
+        ],
+        "contractDependencies": [
+          275,
+          300
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 47,
+        "linearizedBaseContracts": [
+          47,
+          300,
+          275
+        ],
+        "name": "DappTokenCrowdsale",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 45,
+              "nodeType": "Block",
+              "src": "361:6:1",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 46,
+            "implemented": true,
+            "isConstructor": true,
+            "isDeclaredConst": false,
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 40,
+                    "name": "_rate",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 33,
+                    "src": "324:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 41,
+                    "name": "_wallet",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 35,
+                    "src": "331:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 42,
+                    "name": "_token",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 37,
+                    "src": "340:6:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ERC20_$653",
+                      "typeString": "contract ERC20"
+                    }
+                  }
+                ],
+                "id": 43,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 39,
+                  "name": "Crowdsale",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 275,
+                  "src": "314:9:1",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_Crowdsale_$275_$",
+                    "typeString": "type(contract Crowdsale)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "314:33:1"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 38,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 33,
+                  "name": "_rate",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "253:13:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 32,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "253:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 35,
+                  "name": "_wallet",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "272:15:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 34,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "272:7:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37,
+                  "name": "_token",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 46,
+                  "src": "293:12:1",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_ERC20_$653",
+                    "typeString": "contract ERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 36,
+                    "name": "ERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 653,
+                    "src": "293:5:1",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_ERC20_$653",
+                      "typeString": "contract ERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "247:62:1"
+            },
+            "payable": false,
+            "returnParameters": {
+              "id": 44,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "361:0:1"
+            },
+            "scope": 47,
+            "src": "236:131:1",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "public"
+          }
+        ],
+        "scope": 48,
+        "src": "173:197:1"
+      }
+    ],
+    "src": "0:371:1"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.4.24+commit.e67f0147.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "2.0.0",
+  "updatedAt": "2018-08-01T16:44:26.643Z"
+}
