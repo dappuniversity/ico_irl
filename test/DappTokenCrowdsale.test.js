@@ -12,6 +12,7 @@ require('chai')
 
 const DappToken = artifacts.require('DappToken');
 const DappTokenCrowdsale = artifacts.require('DappTokenCrowdsale');
+const RefundVault = artifacts.require('./RefundVault');
 
 contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
 
@@ -34,6 +35,7 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     this.cap = ether(100);
     this.openingTime = latestTime() + duration.weeks(1);
     this.closingTime = this.openingTime + duration.weeks(1);
+    this.goal = ether(50);
 
     // Investor caps
     this.investorMinCap = ether(0.002);
@@ -45,14 +47,19 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
       this.token.address,
       this.cap,
       this.openingTime,
-      this.closingTime
+      this.closingTime,
+      this.goal
     );
 
     // Transfer token ownership to crowdsale
     await this.token.transferOwnership(this.crowdsale.address);
 
     // Add investors to whitelist
-    await this.crowdsale.addAddressesToWhitelist([investor1, investor2]);
+    await this.crowdsale.addManyToWhitelist([investor1, investor2]);
+
+    // Track refund vault
+    this.vaultAddress = await this.crowdsale.vault();
+    this.vault = RefundVault.at(this.vaultAddress);
 
     // Advance time to crowdsale start
     await increaseTimeTo(this.openingTime + 1);
@@ -102,6 +109,18 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     it('rejects contributions from non-whitelisted investors', async function() {
       const notWhitelisted = _;
       await this.crowdsale.buyTokens(notWhitelisted, { value: ether(1), from: notWhitelisted }).should.be.rejectedWith(EVMRevert);
+    });
+  });
+
+  describe('refundable crowdsale', function() {
+    beforeEach(async function() {
+      await this.crowdsale.buyTokens(investor1, { value: ether(1), from: investor1 });
+    });
+
+    describe('during crowdsale', function() {
+      it('prevents the investor from claiming refund', async function() {
+        await this.vault.refund(investor1, { from: investor1 }).should.be.rejectedWith(EVMRevert);
+      });
     });
   });
 
