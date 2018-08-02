@@ -14,6 +14,11 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
   uint256 public investorHardCap = 50000000000000000000; // 50 ether
   mapping(address => uint256) public contributions;
 
+  // Crowdsale Stages
+  enum CrowdsaleStage { PreICO, ICO }
+  // Default to presale stage
+  CrowdsaleStage public stage = CrowdsaleStage.PreICO;
+
   constructor(
     uint256 _rate,
     address _wallet,
@@ -41,6 +46,35 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
     public view returns (uint256)
   {
     return contributions[_beneficiary];
+  }
+
+  /**
+  * @dev Allows admin to update the crowdsale stage
+  * @param _stage Crowdsale stage
+  */
+  function setCrowdsaleStage(uint _stage) public onlyOwner {
+    if(uint(CrowdsaleStage.PreICO) == _stage) {
+      stage = CrowdsaleStage.PreICO;
+    } else if (uint(CrowdsaleStage.ICO) == _stage) {
+      stage = CrowdsaleStage.ICO;
+    }
+
+    if(stage == CrowdsaleStage.PreICO) {
+      rate = 500;
+    } else if (stage == CrowdsaleStage.ICO) {
+      rate = 250;
+    }
+  }
+
+  /**
+   * @dev forwards funds to the wallet during the PreICO stage, then the refund vault during ICO stage
+   */
+  function _forwardFunds() internal {
+    if(stage == CrowdsaleStage.PreICO) {
+      wallet.transfer(msg.value);
+    } else if (stage == CrowdsaleStage.ICO) {
+      super._forwardFunds();
+    }
   }
 
   /**

@@ -41,6 +41,12 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     this.investorMinCap = ether(0.002);
     this.inestorHardCap = ether(50);
 
+    // ICO Stages
+    this.preIcoStage = 0;
+    this.preIcoRate = 500;
+    this.icoStage = 1;
+    this.icoRate = 250;
+
     this.crowdsale = await DappTokenCrowdsale.new(
       this.rate,
       this.wallet,
@@ -121,6 +127,55 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
       it('prevents the investor from claiming refund', async function() {
         await this.vault.refund(investor1, { from: investor1 }).should.be.rejectedWith(EVMRevert);
       });
+    });
+
+    describe('when the corwdsale stage is PreICO', function() {
+      beforeEach(async function () {
+        // Crowdsale stage is already PreICO by default
+        await this.crowdsale.buyTokens(investor1, { value: ether(1), from: investor1 });
+      });
+
+      it('forwards funds to the wallet', async function () {
+        const balance = await web3.eth.getBalance(this.wallet);
+        expect(balance.toNumber()).to.be.above(ether(100));
+      });
+    });
+
+    describe('when the crowdsale stage is ICO', function() {
+      beforeEach(async function () {
+        await this.crowdsale.setCrowdsaleStage(this.icoStage, { from: _ });
+        await this.crowdsale.buyTokens(investor1, { value: ether(1), from: investor1 });
+      });
+
+      it('forwards funds to the refund vault', async function () {
+        const balance = await web3.eth.getBalance(this.vaultAddress);
+        expect(balance.toNumber()).to.be.above(0);
+      });
+    });
+  });
+
+  describe('crowdsale stages', function() {
+
+    it('it starts in PreICO', async function () {
+      const stage = await this.crowdsale.stage();
+      stage.should.be.bignumber.equal(this.preIcoStage);
+    });
+
+    it('starts at the preICO rate', async function () {
+      const rate = await this.crowdsale.rate();
+      rate.should.be.bignumber.equal(this.preIcoRate);
+    });
+
+    it('allows admin to update the stage & rate', async function() {
+      await this.crowdsale.setCrowdsaleStage(this.icoStage, { from: _ });
+      const stage = await this.crowdsale.stage();
+      stage.should.be.bignumber.equal(this.icoStage);
+      const rate = await this.crowdsale.rate();
+      rate.should.be.bignumber.equal(this.icoRate);
+    });
+
+    it('prevents non-admin from updating the stage', async function () {
+      await this.crowdsale.setCrowdsaleStage(this.icoStage, { from: investor1 }).should.be.rejectedWith(EVMRevert);
     });
   });
 
