@@ -48,8 +48,11 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
       this.closingTime
     );
 
-   // Transfer token ownership to crowdsale
+    // Transfer token ownership to crowdsale
     await this.token.transferOwnership(this.crowdsale.address);
+
+    // Add investors to whitelist
+    await this.crowdsale.addAddressesToWhitelist([investor1, investor2]);
 
     // Advance time to crowdsale start
     await increaseTimeTo(this.openingTime + 1);
@@ -92,6 +95,13 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     it('is open', async function() {
       const isClosed = await this.crowdsale.hasClosed();
       isClosed.should.be.false;
+    });
+  });
+
+  describe('whitelisted crowdsale', function() {
+    it('rejects contributions from non-whitelisted investors', async function() {
+      const notWhitelisted = _;
+      await this.crowdsale.buyTokens(notWhitelisted, { value: ether(1), from: notWhitelisted }).should.be.rejectedWith(EVMRevert);
     });
   });
 
