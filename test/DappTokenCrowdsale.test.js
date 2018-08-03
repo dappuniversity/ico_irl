@@ -52,6 +52,12 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     this.icoStage = 1;
     this.icoRate = 250;
 
+    // Token Distribution
+    this.tokenSalePercentage  = 70;
+    this.foundersPercentage   = 10;
+    this.foundationPercentage = 10;
+    this.partnersPercentage   = 10;
+
     this.crowdsale = await DappTokenCrowdsale.new(
       this.rate,
       this.wallet,
@@ -288,11 +294,40 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
         const paused = await this.token.paused();
         paused.should.be.false;
 
+        // Transfers ownership to the wallet
+        const owner = await this.token.owner();
+        owner.should.equal(this.wallet);
+
         // Prevents investor from claiming refund
         await this.vault.refund(investor1, { from: investor1 }).should.be.rejectedWith(EVMRevert);
       });
 
     });
+  });
+
+  describe('token distribution', function() {
+    it('tracks token distribution correctly', async function () {
+      const tokenSalePercentage = await this.crowdsale.tokenSalePercentage();
+      tokenSalePercentage.should.be.bignumber.eq(this.tokenSalePercentage, 'has correct tokenSalePercentage');
+      const foundersPercentage = await this.crowdsale.foundersPercentage();
+      foundersPercentage.should.be.bignumber.eq(this.foundersPercentage, 'has correct foundersPercentage');
+      const foundationPercentage = await this.crowdsale.foundationPercentage();
+      foundationPercentage.should.be.bignumber.eq(this.foundationPercentage, 'has correct foundationPercentage');
+      const partnersPercentage = await this.crowdsale.partnersPercentage();
+      partnersPercentage.should.be.bignumber.eq(this.partnersPercentage, 'has correct partnersPercentage');
+    });
+
+    it('is a valid percentage breakdown', async function () {
+      const tokenSalePercentage = await this.crowdsale.tokenSalePercentage();
+      const foundersPercentage = await this.crowdsale.foundersPercentage();
+      const foundationPercentage = await this.crowdsale.foundationPercentage();
+      const partnersPercentage = await this.crowdsale.partnersPercentage();
+
+      const total = tokenSalePercentage.toNumber() + foundersPercentage.toNumber() + foundationPercentage.toNumber() + partnersPercentage.toNumber()
+      total.should.equal(100);
+    });
+
+
   });
 
 

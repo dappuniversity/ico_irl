@@ -22,6 +22,12 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
   // Default to presale stage
   CrowdsaleStage public stage = CrowdsaleStage.PreICO;
 
+  // Token Distribution
+  uint256 public tokenSalePercentage   = 70;
+  uint256 public foundersPercentage    = 10;
+  uint256 public foundationPercentage  = 10;
+  uint256 public partnersPercentage    = 10;
+
   constructor(
     uint256 _rate,
     address _wallet,
@@ -105,10 +111,12 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
   function finalization() internal {
     if(goalReached()) {
       MintableToken _mintableToken = MintableToken(token);
-      // Do more stuff....
+      // Distribute tokens...
       _mintableToken.finishMinting();
       // Unpause the token
-      PausableToken(token).unpause();
+      PausableToken _pausableToken = PausableToken(token);
+      _pausableToken.unpause();
+      _pausableToken.transferOwnership(wallet);
     }
 
     super.finalization();
