@@ -3,6 +3,7 @@ pragma solidity 0.4.24;
 import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/PausableToken.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/TokenTimelock.sol";
 import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol";
@@ -28,6 +29,17 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
   uint256 public foundationPercentage  = 10;
   uint256 public partnersPercentage    = 10;
 
+  // Token reserve funds
+  address public foundersFund;
+  address public foundationFund;
+  address public partnersFund;
+
+  // Token time lock
+  uint256 public releaseTime;
+  address public foundersTimelock;
+  address public foundationTimelock;
+  address public partnersTimelock;
+
   constructor(
     uint256 _rate,
     address _wallet,
@@ -35,7 +47,11 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
     uint256 _cap,
     uint256 _openingTime,
     uint256 _closingTime,
-    uint256 _goal
+    uint256 _goal,
+    address _foundersFund,
+    address _foundationFund,
+    address _partnersFund,
+    uint256 _releaseTime
   )
     Crowdsale(_rate, _wallet, _token)
     CappedCrowdsale(_cap)
@@ -44,6 +60,10 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
     public
   {
     require(_goal <= _cap);
+    foundersFund   = _foundersFund;
+    foundationFund = _foundationFund;
+    partnersFund   = _partnersFund;
+    releaseTime    = _releaseTime;
   }
 
   /**
@@ -111,7 +131,18 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
   function finalization() internal {
     if(goalReached()) {
       MintableToken _mintableToken = MintableToken(token);
-      // Distribute tokens...
+      uint256 _alreadyMinted = _mintableToken.totalSupply();
+
+      uint256 _finalTotalSupply = _alreadyMinted.div(tokenSalePercentage).mul(100);
+
+      foundersTimelock   = new TokenTimelock(token, foundersFund, releaseTime);
+      foundationTimelock = new TokenTimelock(token, foundationFund, releaseTime);
+      partnersTimelock   = new TokenTimelock(token, partnersFund, releaseTime);
+
+      _mintableToken.mint(foundersTimelock,   _finalTotalSupply.div(foundersPercentage));
+      _mintableToken.mint(foundationTimelock, _finalTotalSupply.div(foundationPercentage));
+      _mintableToken.mint(partnersTimelock,   _finalTotalSupply.div(partnersPercentage));
+
       _mintableToken.finishMinting();
       // Unpause the token
       PausableToken _pausableToken = PausableToken(token);
