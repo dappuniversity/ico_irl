@@ -16,6 +16,11 @@ const RefundVault = artifacts.require('./RefundVault');
 
 contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
 
+  before(async function() {
+    // Transfer extra ether to investor1's account for testing
+    await web3.eth.sendTransaction({ from: _, to: investor1, value: ether(25) })
+  });
+
   beforeEach(async function () {
     // Token config
     this.name = "DappToken";
@@ -56,6 +61,9 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
       this.closingTime,
       this.goal
     );
+
+    // Pause Token
+    await this.token.pause();
 
     // Transfer token ownership to crowdsale
     await this.token.transferOwnership(this.crowdsale.address);
@@ -228,7 +236,64 @@ contract('DappTokenCrowdsale', function([_, wallet, investor1, investor2]) {
     });
   });
 
+  describe('token transfers', function () {
+    it('does not allow investors to transfer tokens during crowdsale', async function () {
+      // Buy some tokens first
+      await this.crowdsale.buyTokens(investor1, { value: ether(1), from: investor1 });
+      // Attempt to transfer tokens during crowdsale
+      await this.token.transfer(investor2, 1, { from: investor1 }).should.be.rejectedWith(EVMRevert);
+    });
+  });
 
+  describe('finalizing the crowdsale', function() {
+    describe('when the goal is not reached', function() {
+      beforeEach(async function () {
+        // Do not meet the toal
+        await this.crowdsale.buyTokens(investor2, { value: ether(1), from: investor2 });
+        // Fastforward past end time
+        await increaseTimeTo(this.closingTime + 1);
+        // Finalize the crowdsale
+        await this.crowdsale.finalize({ from: _ });
+      });
+
+      it('allows the investor to claim refund', async function () {
+        await this.vault.refund(investor2, { from: investor2 }).should.be.fulfilled;
+      });
+    });
+
+    describe('when the goal is reached', function() {
+      beforeEach(async function () {
+        // track current wallet balance
+        this.walletBalance = await web3.eth.getBalance(wallet);
+
+        // Meet the goal
+        await this.crowdsale.buyTokens(investor1, { value: ether(26), from: investor1 });
+        await this.crowdsale.buyTokens(investor2, { value: ether(26), from: investor2 });
+        // Fastforward past end time
+        await increaseTimeTo(this.closingTime + 1);
+        // Finalize the crowdsale
+        await this.crowdsale.finalize({ from: _ });
+      });
+
+      it('handles goal reached', async function () {
+        // Tracks goal reached
+        const goalReached = await this.crowdsale.goalReached();
+        goalReached.should.be.true;
+
+        // Finishes minting token
+        const mintingFinished = await this.token.mintingFinished();
+        mintingFinished.should.be.true;
+
+        // Unpauses the token
+        const paused = await this.token.paused();
+        paused.should.be.false;
+
+        // Prevents investor from claiming refund
+        await this.vault.refund(investor1, { from: investor1 }).should.be.rejectedWith(EVMRevert);
+      });
+
+    });
+  });
 
 
 

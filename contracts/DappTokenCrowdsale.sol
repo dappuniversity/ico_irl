@@ -1,5 +1,8 @@
 pragma solidity 0.4.24;
 
+import "openzeppelin-solidity/contracts/token/ERC20/ERC20.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/PausableToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol";
 import "openzeppelin-solidity/contracts/crowdsale/Crowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/emission/MintedCrowdsale.sol";
 import "openzeppelin-solidity/contracts/crowdsale/validation/CappedCrowdsale.sol";
@@ -93,6 +96,22 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
     uint256 _newContribution = _existingContribution.add(_weiAmount);
     require(_newContribution >= investorMinCap && _newContribution <= investorHardCap);
     contributions[_beneficiary] = _newContribution;
+  }
+
+
+  /**
+   * @dev enables token transfers, called when owner calls finalize()
+  */
+  function finalization() internal {
+    if(goalReached()) {
+      MintableToken _mintableToken = MintableToken(token);
+      // Do more stuff....
+      _mintableToken.finishMinting();
+      // Unpause the token
+      PausableToken(token).unpause();
+    }
+
+    super.finalization();
   }
 
 }
