@@ -139,9 +139,9 @@ contract DappTokenCrowdsale is Crowdsale, MintedCrowdsale, CappedCrowdsale, Time
       foundationTimelock = new TokenTimelock(token, foundationFund, releaseTime);
       partnersTimelock   = new TokenTimelock(token, partnersFund, releaseTime);
 
-      _mintableToken.mint(foundersTimelock,   _finalTotalSupply.div(foundersPercentage));
-      _mintableToken.mint(foundationTimelock, _finalTotalSupply.div(foundationPercentage));
-      _mintableToken.mint(partnersTimelock,   _finalTotalSupply.div(partnersPercentage));
+      _mintableToken.mint(address(foundersTimelock),   _finalTotalSupply.mul(foundersPercentage).div(100));
+      _mintableToken.mint(address(foundationTimelock), _finalTotalSupply.mul(foundationPercentage).div(100));
+      _mintableToken.mint(address(partnersTimelock),   _finalTotalSupply.mul(partnersPercentage).div(100));
 
       _mintableToken.finishMinting();
       // Unpause the token
